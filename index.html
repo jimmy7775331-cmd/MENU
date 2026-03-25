@@ -56,11 +56,23 @@ img {
 <button onclick="send()">📲下单</button>
 
 <script>
-let total =0;
+document.getElementById("orderId").innerText = Math.floor(Math.random() * 100000);
+</script><script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDLQxS8IKc0hr58TwtgnJyYpXyP_1QW_ew",
+  authDomain: "menu-system-78d7e.firebaseapp.com",
+  projectId: "menu-system-78d7e",
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let total = 0;
 let order = [];
 let orderId = Math.floor(Math.random() * 100000);
-
-document.getElementById("orderId").innerText = orderId;
 
 function add(name, price) {
   total += price;
@@ -74,18 +86,24 @@ function add(name, price) {
 }
 
 function send() {
+  let data = {
+    orderId: orderId,
+    items: order,
+    total: total,
+    time: new Date().toLocaleString()
+  };
+
+  // 🔥 保存到数据库
+  db.collection("orders").add(data);
+
   let text = "订单号: " + orderId +
-             "\n我要下单:\n" +
-             order.join("\n") +
+             "\n" + order.join("\n") +
              "\n总价: RM" + total;
 
-  let phone = "601127488180"; // 改号码
+  let phone = "601127488180";
 
   let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(text);
 
   window.open(url);
 }
 </script>
-
-</body>
-</html>
