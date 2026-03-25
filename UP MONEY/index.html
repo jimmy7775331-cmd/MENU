@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>点餐系统</title>
+
+<style>
+body {
+  font-family: Arial;
+  text-align: center;
+}
+
+.menu {
+  border: 1px solid #ddd;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+img {
+  width: 120px;
+  height: 100px;
+  object-fit: cover;
+}
+</style>
+
+</head>
+<body>
+
+<h1>🍽 点餐系统</h1>
+
+<div class="menu">
+  <img src="https://via.placeholder.com/120">
+  <p>鸡饭 RM8</p>
+  <button onclick="add('鸡饭', 8)">添加</button>
+</div>
+
+<div class="menu">
+  <img src="https://via.placeholder.com/120">
+  <p>奶茶 RM5</p>
+  <button onclick="add('奶茶', 5)">添加</button>
+</div>
+
+<div class="menu">
+  <img src="https://via.placeholder.com/120">
+  <p>咖啡 RM4</p>
+  <button onclick="add('咖啡', 4)">添加</button>
+</div>
+
+<h2>订单：</h2>
+<ul id="list"></ul>
+
+<h3>总价: RM <span id="total">0</span></h3>
+<h3>订单号: <span id="orderId"></span></h3>
+
+<button onclick="send()">📲下单</button>
+
+<script>
+let total =0;
+let order = [];
+let orderId = Math.floor(Math.random() * 100000);
+
+document.getElementById("orderId").innerText = orderId;
+
+function add(name, price) {
+  total += price;
+  order.push(name + " RM" + price);
+
+  document.getElementById("total").innerText = total;
+
+  let li = document.createElement("li");
+  li.innerText = name + " RM" + price;
+  document.getElementById("list").appendChild(li);
+}
+
+function send() {
+  let text = "订单号: " + orderId +
+             "\n我要下单:\n" +
+             order.join("\n") +
+             "\n总价: RM" + total;
+
+  let phone = "601127488180"; // 改号码
+
+  let url = "https://wa.me/" + phone + "?text=" + encodeURIComponent(text);
+
+  window.open(url);
+}
+</script>
+
+</body>
+</html>
